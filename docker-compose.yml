@@ -1,0 +1,18 @@
+version: '2'
+services:
+  nginx:
+    image: nginx
+    ports:
+      - "80:80"
+    links:
+      - php-fpm
+    volumes:
+      - /home/dockers/php/nginx/www:/var/www/html # 代码目录 放代码的 这里我使用的win7 将本地文件映射到了/home/dockers/php/这个文件夹
+      - /home/dockers/php/nginx/sites:/etc/nginx/conf.d # 配置文件 放站点conf文件
+      - /home/dockers/php/nginx/logs:/var/log/nginx # nginx 日志目录
+    command: [nginx-debug,'-g','daemon off;']
+  php-fpm:
+    image: 'bitnami/php-fpm:7.1'
+    volumes:
+      - /home/dockers/php/nginx/www:/var/www/html
+      - /home/dockers/php/php-fpm/php.ini:/bitnami/conf/php.ini
